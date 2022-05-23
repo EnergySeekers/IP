@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class OptionsMenu : MonoBehaviour
 {
-    public GameObject Panel;
+    public GameObject OptionsPanel;
     // Start is called before the first frame update
     
-    public void OpenPanel()
+    public void OpenOptionsPanel()
     {
-        if(Panel != null)
+        if(OptionsPanel != null)
         {
-            bool isActive = Panel.activeSelf;
-            Panel.SetActive(!isActive);
+            bool isActive = OptionsPanel.activeSelf;
+            OptionsPanel.SetActive(!isActive);
         }
     }
 }
+
