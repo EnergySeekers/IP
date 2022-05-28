@@ -7,13 +7,20 @@ public class MachinesLogic : MonoBehaviour
 {
     public GameObject CopperForgePanel;
     public GameObject CopperSmithingPanel;
+    public GameObject CopperRobotPanel;
+
+    public float timer = 0.0f;
+    public float waitTime = 10.0f;
 
     public double copperOre = 100;
     public double copperIngot = 0;
-    public double coal = 100;
+    public double coal = 20;
     public double copperWire = 0;
     public double copperPipes = 0;
     public double copperContainers = 0;
+    public double target = 0;
+    public float fillSpeed = 0.5f;
+    public bool robocheck = false;
 
     public Text copperOreText;
     public Text copperIngotTextForge;
@@ -22,6 +29,16 @@ public class MachinesLogic : MonoBehaviour
     public Text copperWireText;
     public Text copperPipesText;
     public Text copperContainersText;
+    public Text roboCoalText;
+    public Text roboOreText;
+
+    public Slider slider;
+
+
+    public void IncrementProgress(float newProgress)
+    {
+        target = slider.value + newProgress;
+    }
 
     // Start is called before the first frame update
 
@@ -41,18 +58,27 @@ public class MachinesLogic : MonoBehaviour
             CopperSmithingPanel.SetActive(!isActive);
         }
     }
+    public void OpenCopperRoboPanel()
+    {
+        if (CopperRobotPanel != null)
+        {
+            bool isActive = CopperRobotPanel.activeSelf;
+            CopperRobotPanel.SetActive(!isActive);
+        }
+    }
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        IncrementProgress(0.75f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime;
         copperOreText.text = "Copper Ore: " + copperOre;
         copperIngotTextForge.text = "Copper Ingots: " + copperIngot;
         copperIngotTextSmithing.text = "Copper Ingots: " + copperIngot;
@@ -60,6 +86,23 @@ public class MachinesLogic : MonoBehaviour
         copperWireText.text = "Copper Wire: " + copperWire;
         copperPipesText.text = "Copper Pipes: " + copperPipes;
         copperContainersText.text = "Copper Containers: " + copperContainers;
+        roboCoalText.text = "Coal: " + coal;
+        roboOreText.text = "Copper Ore: " + copperOre;
+
+        if(robocheck == true)
+        {
+            if(timer > waitTime && coal >= 10)
+            {
+                timer = timer - waitTime;
+                coal -= 10;
+                copperOre += 10;
+                slider.value = 0;
+            }
+            if (slider.value < waitTime)
+            {
+                slider.value += (waitTime / 100) * Time.deltaTime;
+            }
+        }
     }
 
     public void ForgeIngot()
@@ -93,6 +136,13 @@ public class MachinesLogic : MonoBehaviour
         {
             copperIngot -= 1;
             copperContainers += 2;
+        }
+    }
+    public void DeployRobot()
+    {
+        if(coal >= 10)
+        {
+            robocheck = true;
         }
     }
 }
