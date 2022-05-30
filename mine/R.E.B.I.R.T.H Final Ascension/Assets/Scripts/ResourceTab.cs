@@ -34,28 +34,66 @@ public class ResourceTab : MonoBehaviour
     public Text Cooper_Stock;
 
     // Start is called before the first frame update
+    public int var = 0;
 
     public void OpenWoodPanel()
     {
-        if (Wood != null)
+        bool isActive = Wood.activeSelf;
+
+        if (Wood != null && (var == 0 || var == 1))
         {
-            bool isActive = Wood.activeSelf;
+            var = 1;    
             Wood.SetActive(!isActive);
         }
+        if(var != 0 && var != 1)
+        {
+            if(var == 2)
+                Stone.SetActive(isActive);
+            if(var == 3)
+                Cooper.SetActive(isActive);
+           
+            var = 1;
+            Wood.SetActive(!isActive);
+        }
+
     }
     public void OpenStonePanel()
     {
-        if (Stone != null)
+        bool isActive = Stone.activeSelf;
+
+        if (Stone != null && (var == 0 || var == 2))
         {
-            bool isActive = Stone.activeSelf;
+            var = 2;
+            Stone.SetActive(!isActive);
+        }
+        if (var != 0 && var != 2)
+        {
+            if (var == 1)
+                Wood.SetActive(isActive);
+            if (var == 3)
+                Cooper.SetActive(isActive);
+
+            var = 2;
             Stone.SetActive(!isActive);
         }
     }
     public void OpenCooperPanel()
     {
-        if (Cooper != null)
+        bool isActive = Cooper.activeSelf;
+
+        if (Cooper != null && (var == 0 || var == 3))
         {
-            bool isActive = Cooper.activeSelf;
+            var = 3;
+            Cooper.SetActive(!isActive);
+        }
+        if (var != 0 && var != 3)
+        {
+            if (var == 1)
+                Wood.SetActive(isActive);
+            if (var == 2)
+                Stone.SetActive(isActive);
+
+            var = 3;
             Cooper.SetActive(!isActive);
         }
     }
@@ -71,16 +109,16 @@ public class ResourceTab : MonoBehaviour
     void Update()
     {
        
-        Wood_Production.text = "Wood Production:" + WoodProduction;
-        Wood_Intake.text = "Wood Intake:" + WoodIntake;
-        Wood_Stock.text = "Wood Intake:" + WoodStock;
+        Wood_Production.text = "Wood Production: " + WoodProduction;
+        Wood_Intake.text = "Wood Intake:         " + WoodIntake;
+        Wood_Stock.text = "Wood Stocks:        " + WoodStock;
 
-        Stone_Production.text = "Stone Production:" + StoneProduction;
-        Stone_Intake.text = "Stone Intake:" + StoneIntake;
-        Stone_Stock.text = "Stone Intake:" + StoneStock;
+        Stone_Production.text = "Stone Production: " + StoneProduction;
+        Stone_Intake.text = "Stone Intake:         " + StoneIntake;
+        Stone_Stock.text = "Stone Stocks:        " + StoneStock;
 
-        Cooper_Production.text = "Cooper Production:" + CooperProduction;
-        Cooper_Intake.text = "Cooper Intake:" + CooperIntake;
-        Cooper_Stock.text = "Cooper Intake:" + CooperStock;
+        Cooper_Production.text = "Cooper Production: " + CooperProduction;
+        Cooper_Intake.text = "Cooper Intake:         " + CooperIntake;
+        Cooper_Stock.text = "Cooper Stocks:        " + CooperStock;
     }
 }

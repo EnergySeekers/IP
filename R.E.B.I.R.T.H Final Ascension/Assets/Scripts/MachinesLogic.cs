@@ -21,6 +21,8 @@ public class MachinesLogic : MonoBehaviour
     public double target = 0;
     public float fillSpeed = 0.5f;
     public bool robocheck = false;
+    public int roboNo = 0;
+
 
     public Text copperOreText;
     public Text copperIngotTextForge;
@@ -31,6 +33,8 @@ public class MachinesLogic : MonoBehaviour
     public Text copperContainersText;
     public Text roboCoalText;
     public Text roboOreText;
+    public Text roboNoText;
+    //public GameObject buttonToHide;
 
     public Slider slider;
 
@@ -64,6 +68,7 @@ public class MachinesLogic : MonoBehaviour
         {
             bool isActive = CopperRobotPanel.activeSelf;
             CopperRobotPanel.SetActive(!isActive);
+            roboNo = 1;
         }
     }
 
@@ -73,6 +78,8 @@ public class MachinesLogic : MonoBehaviour
     void Start()
     {
         IncrementProgress(0.75f);
+/*        buttonToHide = GetComponent<Button>();
+        buttonToHide.onClick.AddListener(() => StopRobot());*/
     }
 
     // Update is called once per frame
@@ -88,19 +95,24 @@ public class MachinesLogic : MonoBehaviour
         copperContainersText.text = "Copper Containers: " + copperContainers;
         roboCoalText.text = "Coal: " + coal;
         roboOreText.text = "Copper Ore: " + copperOre;
+        roboNoText.text = "Robots number: " + roboNo;
 
         if(robocheck == true)
         {
-            if(timer > waitTime && coal >= 10)
+            if(timer >= waitTime && coal >= 10 * roboNo)
             {
                 timer = timer - waitTime;
-                coal -= 10;
-                copperOre += 10;
+                coal -= 10 * roboNo;
+                copperOre += 10 * roboNo;
                 slider.value = 0;
             }
-            if (slider.value < waitTime)
+            if (slider.value <= waitTime)
             {
-                slider.value += (waitTime / 100) * Time.deltaTime;
+                slider.value += ((waitTime) / 80) * Time.deltaTime;
+            }
+            if(coal == 0)
+            {
+                StopRobot();
             }
         }
     }
@@ -145,4 +157,16 @@ public class MachinesLogic : MonoBehaviour
             robocheck = true;
         }
     }
+    public void StopRobot()
+    {
+        robocheck = false;
+        slider.value = 0;
+        //buttonToHide.gameObject.setActive(false);
+    }
+
+    public void addRobot()
+    {
+        roboNo += 1;
+    }
+
 }
